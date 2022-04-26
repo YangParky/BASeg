@@ -87,5 +87,3 @@ If you find the code or trained models useful, please consider citing:
 
 ### Acknowledgement
 The code is from the first author of semseg.
-=======
-
