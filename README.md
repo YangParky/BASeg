@@ -1,9 +1,7 @@
 # BASeg
 The code of paper "BASeg: Boundary Aware Semantic Segmentation for Autonomous Driving"
 
-
 ### Introduction
-
 This repository is a official PyTorch implementation for semantic segmentation. 
 
 <img src="./figure/image.jpg" width="900"/>
@@ -21,26 +19,26 @@ This repository is a official PyTorch implementation for semantic segmentation.
 3. Data preparation
    - Download related datasets ([ADE20K](http://groups.csail.mit.edu/vision/datasets/ADE20K/), [Cityscapes](https://www.cityscapes-dataset.com/), [CamVid](https://github.com/lih627/CamVid)) and symlink the paths to them as follows (you can alternatively modify the relevant paths specified in folder `config`):
 
-   - To boost the slow speed of the training, you're supposed to prepare the boundary ground truth from (https://drive.google.com/drive/folders/1wihXt4chb8Tq5lvPCtT1HXkDqWcyCyoc?usp=sharing).
+   - To boost the slow speed of the training, you're supposed to prepare the boundary ground truth from [here](https://drive.google.com/drive/folders/1wihXt4chb8Tq5lvPCtT1HXkDqWcyCyoc?usp=sharing).
 
    - The directory structure is the standard layout for the torchvision
-   ```
-   /Dataset/
-     ADE20K/
-       Scene-Parsing/
-          ADEChallengeData2016/
-            images/
-            bound/
-            annotations/
-     Cityscapes/
-       bound/
-       gtFine/
-       leftImg8bit/
-     CamVid/
-       bound/
-       CamVid_Label/
-       CamVid_RGB/
-   ```
+     ```
+     /Dataset/
+       ADE20K/
+         Scene-Parsing/
+            ADEChallengeData2016/
+              images/
+              bound/
+              annotations/
+       Cityscapes/
+         bound/
+         gtFine/
+         leftImg8bit/
+       CamVid/
+         bound/
+         CamVid_Label/
+         CamVid_RGB/
+     ```
 
 4. Train:
    - Download ImageNet pre-trained [models](https://drive.google.com/open?id=15wx9vOM0euyizq-M1uINgN0_wjVRf9J3) and put them under folder `model` for weight initialization. 
@@ -49,12 +47,10 @@ This repository is a official PyTorch implementation for semantic segmentation.
      ```shell
      sh tool/trainade.sh ade20k baseg101
      ```
-
    - Cityscapes:
      ```shell
      sh tool/traincityscapes.sh cityscapes baseg101
      ```
-
    - CamVid:
      ```shell
      sh tool/traincamvid.sh camvid baseg101
@@ -68,19 +64,16 @@ This repository is a official PyTorch implementation for semantic segmentation.
      ```shell
      sh tool/testade.sh ade20k baseg101
      ```
-
    - Test on Cityscapes
      ```shell
      sh tool/testcityscapes.sh cityscapes baseg101
      ```
-
    - Validation on CamVid
      ```shell
      sh tool/testcamvid.sh camvid baseg101
      ```
 
 ### Citation
-
 If you find the code or trained models useful, please consider citing:
 ```
 @InProceedings{zhao2018psanet,
