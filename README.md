@@ -38,29 +38,32 @@ This repository is a official PyTorch implementation for semantic segmentation.
          bound/
          CamVid_Label/
          CamVid_RGB/
+    /Model
+    /Project
+       /BASeg/
      ```
 
 4. Train:
    - Download ImageNet pre-trained [models](https://drive.google.com/open?id=15wx9vOM0euyizq-M1uINgN0_wjVRf9J3) and put them under folder `model` for weight initialization. 
-   
-   - ADE20K:
+
+   - For full traning:
+     ADE20K:
      ```shell
      sh tool/trainade.sh ade20k baseg101
      ```
-   - Cityscapes:
+     Cityscapes:
      ```shell
      sh tool/traincityscapes.sh cityscapes baseg101
      ```
-   - CamVid:
+     CamVid:
      ```shell
      sh tool/traincamvid.sh camvid baseg101
      ```
 
 5. Test:
    - Download trained segmentation [models](https://drive.google.com/drive/folders/1u63PwLEDbvURM_THT99X6UNuQPSP0I3h?usp=sharing) and put them under folder specified in config or modify the specified paths.
-
+   
    - For full testing (get listed performance):
-
      Validation on ADE20K
       ```shell
       sh tool/testade.sh ade20k baseg101
