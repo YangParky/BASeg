@@ -60,7 +60,7 @@ This repository is a official PyTorch implementation for semantic segmentation.
    - Download trained segmentation [models](https://drive.google.com/drive/folders/1u63PwLEDbvURM_THT99X6UNuQPSP0I3h?usp=sharing) and put them under folder specified in config or modify the specified paths.
 
    - For full testing (get listed performance):
-   
+
      Validation on ADE20K
       ```shell
       sh tool/testade.sh ade20k baseg101
@@ -90,7 +90,7 @@ If you find the code or trained models useful, please consider citing:
 @InProceedings{zhao2018psanet,
   title={{BASeg}: Boundary Aware Semantic Segmentation for Autonomous Driving},
   author={Xiao, Zhao, and Zhang},
-  booktitle={ECCV},
+  booktitle={arixv},
   month={November},
   year={2022}
 }
@@ -98,3 +98,6 @@ If you find the code or trained models useful, please consider citing:
 
 ### Acknowledgement
 The code is from the first author of semseg.
+
+### License
+This repository is released under MIT License (see LICENSE file for details).
