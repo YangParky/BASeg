@@ -47,6 +47,7 @@ This repository is a official PyTorch implementation for semantic segmentation.
    - Download ImageNet pre-trained [models](https://drive.google.com/open?id=15wx9vOM0euyizq-M1uINgN0_wjVRf9J3) and put them under folder `model` for weight initialization. 
 
    - For full traning:
+
      ADE20K:
      ```shell
      sh tool/trainade.sh ade20k baseg101
@@ -64,6 +65,7 @@ This repository is a official PyTorch implementation for semantic segmentation.
    - Download trained segmentation [models](https://drive.google.com/drive/folders/1u63PwLEDbvURM_THT99X6UNuQPSP0I3h?usp=sharing) and put them under folder specified in config or modify the specified paths.
    
    - For full testing (get listed performance):
+   
      Validation on ADE20K
       ```shell
       sh tool/testade.sh ade20k baseg101
