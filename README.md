@@ -60,19 +60,28 @@ This repository is a official PyTorch implementation for semantic segmentation.
    - Download trained segmentation [models](https://drive.google.com/drive/folders/1u63PwLEDbvURM_THT99X6UNuQPSP0I3h?usp=sharing) and put them under folder specified in config or modify the specified paths.
 
    - For full testing (get listed performance):
-   - Validation on ADE20K
-     ```shell
-     sh tool/testade.sh ade20k baseg101
-     ```
-   - Test on Cityscapes
-     ```shell
-     sh tool/testcityscapes.sh cityscapes baseg101
-     ```
-   - Validation on CamVid
-     ```shell
-     sh tool/testcamvid.sh camvid baseg101
-     ```
+    Validation on ADE20K
+      ```shell
+      sh tool/testade.sh ade20k baseg101
+      ```
+    Test on Cityscapes
+      ```shell
+      sh tool/testcityscapes.sh cityscapes baseg101
+      ```
+    Validation on CamVid
+      ```shell
+      sh tool/testcamvid.sh camvid baseg101
+      ```
 
+    - For boundary evaluation:
+    Evaluation on boundary F1_score
+      ```shell
+      python util/f_boundary.py
+      ```
+    Evaluation on interior F1_score
+      ```shell
+      python util/f_interior.py
+      ```
 ### Citation
 If you find the code or trained models useful, please consider citing:
 ```
