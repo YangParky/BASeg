@@ -60,6 +60,7 @@ This repository is a official PyTorch implementation for semantic segmentation.
    - Download trained segmentation [models](https://drive.google.com/drive/folders/1u63PwLEDbvURM_THT99X6UNuQPSP0I3h?usp=sharing) and put them under folder specified in config or modify the specified paths.
 
    - For full testing (get listed performance):
+   
      Validation on ADE20K
       ```shell
       sh tool/testade.sh ade20k baseg101
