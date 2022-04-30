@@ -80,6 +80,7 @@ This repository is a official PyTorch implementation for semantic segmentation.
       ```
 
    - For boundary evaluation:
+
      Evaluation on boundary F1_score
       ```shell
       python util/f_boundary.py
@@ -92,7 +93,7 @@ This repository is a official PyTorch implementation for semantic segmentation.
 ### Citation
 If you find the code or trained models useful, please consider citing:
 ```
-@InProceedings{zhao2018psanet,
+@InProceedings{xiao2022baseg,
   title={{BASeg}: Boundary Aware Semantic Segmentation for Autonomous Driving},
   author={Xiao, Zhao, and Zhang},
   booktitle={arixv},
