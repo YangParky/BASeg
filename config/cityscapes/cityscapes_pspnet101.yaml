@@ -1,7 +1,7 @@
 DATA:
-  data_root: dataset/cityscapes
-  train_list: dataset/cityscapes/list/fine_train.txt
-  val_list: dataset/cityscapes/list/fine_val.txt
+  data_root: ../../Dataset/Cityscapes/
+  train_list: data/cityscapes/list/fine_train.txt
+  val_list: data/cityscapes/list/fine_val.txt
   classes: 19
 
 TRAIN:
@@ -10,16 +10,21 @@ TRAIN:
   sync_bn: True  # adopt syncbn or not
   train_h: 713
   train_w: 713
+  multi_grid: [ 1, 1, 1 ]
+  ohem: False
   scale_min: 0.5  # minimum random scale
   scale_max: 2.0  # maximum random scale
   rotate_min: -10  # minimum random rotate
   rotate_max: 10  # maximum random rotate
   zoom_factor: 8  # zoom factor for final prediction during training, be in [1, 2, 4, 8]
   ignore_label: 255
+  edge_weight: 8.0
+  seg_weight: 1.0
+  att_weight: 0.0
   aux_weight: 0.4
-  train_gpu: [0, 1, 2, 3, 4, 5, 6, 7]
-  workers: 16  # data loader workers
-  batch_size: 16  # batch size for training
+  train_gpu: [0]
+  workers: 2  # data loader workers
+  batch_size: 2  # batch size for training
   batch_size_val: 8  # batch size for validation during training, memory and speed tradeoff
   base_lr: 0.01
   epochs: 200
@@ -42,7 +47,7 @@ Distributed:
   rank: 0
 
 TEST:
-  test_list: dataset/cityscapes/list/fine_val.txt
+  test_list: data/cityscapes/list/fine_val.txt
   split: val  # split in [train, val and test]
   base_size: 2048  # based size for scaling
   test_h: 713
@@ -53,6 +58,6 @@ TEST:
   index_step: 0  # evaluation step index in list, 0 means to end
   test_gpu: [0]
   model_path: exp/cityscapes/pspnet101/model/train_epoch_200.pth  # evaluation model path
-  save_folder: exp/cityscapes/pspnet101/result/epoch_200/val/ss  # results save folder
+  save_folder: exp/cityscapes/pspnet101/result/val/ss  # results save folder
   colors_path: data/cityscapes/cityscapes_colors.txt  # path of dataset colors
   names_path: data/cityscapes/cityscapes_names.txt  # path of dataset category names

@@ -9,6 +9,7 @@ from PIL import Image
 from scipy.ndimage.morphology import distance_transform_edt
 from skimage import segmentation as skimage_seg
 
+
 def mask_to_onehot(mask, num_classes):
     """
     Converts a segmentation mask (H,W) to (K,H,W) where the last dim is a one

@@ -316,28 +316,77 @@ from torch import nn
 from fvcore.nn.jit_handles import get_shape, conv_flop_count
 from fvcore.nn import flop_count
 
-# from model.baseg import BASeg
+from model.baseg import BASeg
 from model.pspnet import PSPNet
 from model.psanet import PSANet
-# from model.ccnet import Seg_Model
-# from model.danet import get_danet
+from model.ccnet import Seg_Model
+from model.danet import get_danet
+from model.ocnet import get_resnet101_asp_oc_dsn
+from model.encnet import get_encnet
 
-# model = BASeg(layers=101, num_classes=150, in_channels=[256, 512, 1024, 2048], embed_dim=512,
-#               multi_grid=tuple([1, 1, 1]), pretrained=False).cuda()
 
-# model = Seg_Model(num_classes=150, criterion=None, pretrained_model=None).cuda()
+model1 = BASeg(layers=101, num_classes=150, in_channels=[256, 512, 1024, 2048], embed_dim=512,
+               multi_grid=tuple([1, 1, 1]), pretrained=False).cuda()
 
-# model = PSPNet(pretrained=False, num_classes=150).cuda()
+# model2 = Seg_Model(num_classes=150, criterion=None, pretrained_model=None).cuda()
 
-model = PSANet(pretrained=False, num_classes=150).cuda()
+model3 = PSPNet(pretrained=False, num_classes=19).cuda()
 
-# model = get_danet().cuda()
+model4 = PSANet(pretrained=False, num_classes=19).cuda()
 
-img = torch.randn(2, 3, 224, 224).cuda()
+# model5 = get_danet().cuda()
+#
+# model6 = get_resnet101_asp_oc_dsn(num_classes=150).cuda()
+#
+# model7 = get_encnet().cuda()
 
-flops_dict, *_ = flop_count(model, img)
+img = torch.randn(2, 3, 769, 769).cuda()
+
+flops_dict, *_ = flop_count(model1, img)
 count = sum(flops_dict.values())
-n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
+n_parameters = sum(p.numel() for p in model1.parameters() if p.requires_grad)
 
-print(f"FLOPs: {count:.3f}G\n"
-      f"#param: {n_parameters / 1e6:.3f}M")
+print(f"BASeg FLOPs: {count:.3f}G\n"
+      f"BASeg param: {n_parameters / 1e6:.3f}M")
+
+# flops_dict, *_ = flop_count(model2, img)
+# count = sum(flops_dict.values())
+# n_parameters = sum(p.numel() for p in model2.parameters() if p.requires_grad)
+#
+# print(f"CCNet FLOPs: {count:.3f}G\n"
+#       f"CCNet param: {n_parameters / 1e6:.3f}M")
+
+flops_dict, *_ = flop_count(model3, img)
+count = sum(flops_dict.values())
+n_parameters = sum(p.numel() for p in model3.parameters() if p.requires_grad)
+
+print(f"PSPNet FLOPs: {count:.3f}G\n"
+      f"PSPNet param: {n_parameters / 1e6:.3f}M")
+
+flops_dict, *_ = flop_count(model4, img)
+count = sum(flops_dict.values())
+n_parameters = sum(p.numel() for p in model4.parameters() if p.requires_grad)
+
+print(f"PSANet FLOPs: {count:.3f}G\n"
+      f"PSANet param: {n_parameters / 1e6:.3f}M")
+
+# flops_dict, *_ = flop_count(model5, img)
+# count = sum(flops_dict.values())
+# n_parameters = sum(p.numel() for p in model5.parameters() if p.requires_grad)
+#
+# print(f"DANet FLOPs: {count:.3f}G\n"
+#       f"DANet param: {n_parameters / 1e6:.3f}M")
+#
+# flops_dict, *_ = flop_count(model6, img)
+# count = sum(flops_dict.values())
+# n_parameters = sum(p.numel() for p in model6.parameters() if p.requires_grad)
+#
+# print(f"OCNet FLOPs: {count:.3f}G\n"
+#       f"OCNet param: {n_parameters / 1e6:.3f}M")
+#
+# flops_dict, *_ = flop_count(model7, img)
+# count = sum(flops_dict.values())
+# n_parameters = sum(p.numel() for p in model7.parameters() if p.requires_grad)
+#
+# print(f"ENCNet FLOPs: {count:.3f}G\n"
+#       f"ENCNet param: {n_parameters / 1e6:.3f}M")

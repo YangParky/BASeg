@@ -13,7 +13,7 @@ This repository is a official PyTorch implementation for semantic segmentation.
 
 2. Clone the repository:
    ```shell
-   git clone git@github.com:Lature-Yang/BASeg.git
+   git clone git@github.com:YangParky/BASeg.git
    ```
 
 3. Data preparation

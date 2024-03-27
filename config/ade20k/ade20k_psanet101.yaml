@@ -1,7 +1,7 @@
 DATA:
-  data_root: dataset/ade20k
-  train_list: dataset/ade20k/list/training.txt
-  val_list: dataset/ade20k/list/validation.txt
+  data_root: ../../Dataset/ADE20K/Scene-Parsing/ADEChallengeData2016/
+  train_list: data/ade20k/list/training.txt
+  val_list: data/ade20k/list/validation.txt
   classes: 150
 
 TRAIN:
@@ -10,6 +10,7 @@ TRAIN:
   sync_bn: True  # adopt sync_bn or not
   train_h: 465
   train_w: 465
+  multi_grid: [ 1, 1, 1 ]
   scale_min: 0.5  # minimum random scale
   scale_max: 2.0  # maximum random scale
   rotate_min: -10  # minimum random rotate
@@ -20,13 +21,13 @@ TRAIN:
   psa_type: 2 # 0-collect, 1-distribute, 2-bi-direction
   compact: 0 # 0-no, 1-yes
   shrink_factor: 2 # shrink factor when get attention mask
-  mask_h: # specify mask h or not
-  mask_w: # specify mask w or not
+  mask_h: 59 # specify mask h or not
+  mask_w: 59 # specify mask w or not
   normalization_factor: 1.0 # normalization factor for aggregation
   psa_softmax: 1 # softmax on mask or not: 0-no, 1-yes
-  train_gpu: [0, 1, 2, 3, 4, 5, 6, 7]
-  workers: 16  # data loader workers
-  batch_size: 16  # batch size for training
+  train_gpu: [0]
+  workers: 2  # data loader workers
+  batch_size: 2  # batch size for training
   batch_size_val: 8  # batch size for validation during training, memory and speed tradeoff
   base_lr: 0.01
   epochs: 100
@@ -49,7 +50,7 @@ Distributed:
   rank: 0
 
 TEST:
-  test_list: dataset/ade20k/list/validation.txt
+  test_list: data/ade20k/list/validation.txt
   split: val  # split in [train, val and test]
   base_size: 512  # based size for scaling
   test_h: 465
@@ -60,6 +61,6 @@ TEST:
   index_step: 0  # evaluation step index in list, 0 means to end
   test_gpu: [0]
   model_path: exp/ade20k/psanet101/model/train_epoch_100.pth  # evaluation model path
-  save_folder: exp/ade20k/psanet101/result/epoch_100/val/ss  # results save folder
+  save_folder: exp/ade20k/psanet101/result/val/ss  # results save folder
   colors_path: data/ade20k/ade20k_colors.txt  # path of dataset colors
   names_path: data/ade20k/ade20k_names.txt  # path of dataset category names

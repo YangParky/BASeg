@@ -1,7 +1,7 @@
 DATA:
-  data_root: dataset/ade20k
-  train_list: dataset/ade20k/list/training.txt
-  val_list: dataset/ade20k/list/validation.txt
+  data_root: ../../Dataset/ADE20K/Scene-Parsing/ADEChallengeData2016/
+  train_list: data/ade20k/list/training.txt
+  val_list: data/ade20k/list/validation.txt
   classes: 150
 
 TRAIN:
@@ -10,6 +10,7 @@ TRAIN:
   sync_bn: True  # adopt sync_bn or not
   train_h: 473
   train_w: 473
+  multi_grid: [ 1, 1, 1 ]
   scale_min: 0.5  # minimum random scale
   scale_max: 2.0  # maximum random scale
   rotate_min: -10  # minimum random rotate
@@ -17,9 +18,9 @@ TRAIN:
   zoom_factor: 8  # zoom factor for final prediction during training, be in [1, 2, 4, 8]
   ignore_label: 255
   aux_weight: 0.4
-  train_gpu: [0, 1, 2, 3, 4, 5, 6, 7]
-  workers: 16  # data loader workers
-  batch_size: 16  # batch size for training
+  train_gpu: [0]
+  workers: 2  # data loader workers
+  batch_size: 2  # batch size for training
   batch_size_val: 8  # batch size for validation during training, memory and speed tradeoff
   base_lr: 0.01
   epochs: 100
@@ -42,7 +43,7 @@ Distributed:
   rank: 0
 
 TEST:
-  test_list: dataset/ade20k/list/validation.txt
+  test_list: data/ade20k/list/validation.txt
   split: val  # split in [train, val and test]
   base_size: 512  # based size for scaling
   test_h: 473
@@ -53,6 +54,6 @@ TEST:
   index_step: 0  # evaluation step index in list, 0 means to end
   test_gpu: [0]
   model_path: exp/ade20k/pspnet101/model/train_epoch_100.pth  # evaluation model path
-  save_folder: exp/ade20k/pspnet101/result/epoch_100/val/ss  # results save folder
+  save_folder: exp/ade20k/pspnet101/result/val/ss  # results save folder
   colors_path: data/ade20k/ade20k_colors.txt  # path of dataset colors
   names_path: data/ade20k/ade20k_names.txt  # path of dataset category names

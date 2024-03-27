@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="root@202.197.66.3:15070" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="root@202.197.66.3:11070">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/root/Project/BASeg" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="root@202.197.66.3:15070">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/root/Project/BASeg" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="root@202.197.66.3:17070">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/root/Project/BASeg" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

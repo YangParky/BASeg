@@ -12,7 +12,6 @@ TRAIN:
   train_w: 769
   multi_grid: [1, 1, 1]
   in_channels: [256, 512, 1024, 2048]
-  depth: [1]
   embed_dim: 512
   ohem: False
   scale_min: 0.5  # minimum random scale
@@ -26,7 +25,7 @@ TRAIN:
   att_weight: 0.0
   aux_weight: 0.4
   train_gpu: [0, 1, 2, 3]
-  workers: 12  # data loader workers
+  workers: 8  # data loader workers
   batch_size: 8  # batch size for training
   batch_size_val: 8  # batch size for validation during training, memory and speed tradeoff
   base_lr: 0.001
@@ -38,9 +37,9 @@ TRAIN:
   manual_seed:
   print_freq: 10
   save_freq: 1
-  save_path: exp/cityscapes/baseg101/model/baseline_aspp_canny_gate_lre2_flohem_tv3
+  save_path: exp/cityscapes/baseg101/model/cc_head/
   weight:  # path to initial weight (default: none)
-  resume:  # exp/cityscapes/baseg101/model/baseline_aspp_edge_gate_lre3/train_epoch_111.pth
+  resume:  # exp/cityscapes/baseg101/
   evaluate: False  # evaluate on validation set, extra gpu memory needed and small batch_size_val is recommend
 Distributed:
   dist_url: tcp://127.0.0.1:6789
@@ -50,8 +49,8 @@ Distributed:
   rank: 0
 
 TEST:
-  test_list: data/cityscapes/list/fine_test.txt
-  split: test  # split in [train, val and test]
+  test_list: data/cityscapes/list/fine_val.txt
+  split: val  # split in [train, val and test]
   base_size: 2048  # based size for scaling
   test_h: 769
   test_w: 769
@@ -60,7 +59,7 @@ TEST:
   index_start: 0  # evaluation start index in list
   index_step: 0  # evaluation step index in list, 0 means to end
   test_gpu: [0]
-  model_path: exp/cityscapes/baseg101/model/baseline_aspp_canny_gate_lre2_flohem_tv3/train_epoch_291.pth  # evaluation model path
-  save_folder: exp/cityscapes/baseg101/result/baseline_aspp_canny_gate_lre2_flohem_tv3/ms/test/  # results save folder
+  model_path: exp/cityscapes/baseg101/model/train_epoch_200.pth  # evaluation model path
+  save_folder: exp/cityscapes/baseg101/result/val/ms  # results save folder
   colors_path: data/cityscapes/cityscapes_colors.txt  # path of dataset colors
   names_path: data/cityscapes/cityscapes_names.txt  # path of dataset category names

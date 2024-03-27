@@ -133,7 +133,7 @@ class ResNet(nn.Module):
 
 
 def get_resnet101_baseline(pretrained=False, num_classes=19,multi_grid=(1,1,1),BatchNorm=nn.BatchNorm2d):
-    model = ResNet(Bottleneck,[3, 4, 23, 3], num_classes,multi_grid=multi_grid, BatchNorm2d=BatchNorm)
+    model = ResNet(Bottleneck,[3, 4, 23, 3], num_classes, multi_grid=multi_grid, BatchNorm2d=BatchNorm)
     if pretrained:
         #pretrain_dict = model_zoo.load_url('https://download.pytorch.org/models/resnet101-5d3b4d8f.pth')
         pretrain_dict = torch.load("../../Model/resnet101_v2.pth")
