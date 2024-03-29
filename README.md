@@ -1,5 +1,5 @@
 # BASeg
-The code of paper "BASeg: Boundary Aware Semantic Segmentation for Autonomous Driving"
+The code of paper ["BASeg: Boundary Aware Semantic Segmentation for Autonomous Driving"](https://www.sciencedirect.com/science/article/abs/pii/S0893608022004294)
 
 ### Introduction
 This repository is a official PyTorch implementation for semantic segmentation. 
