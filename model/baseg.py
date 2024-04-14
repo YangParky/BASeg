@@ -230,61 +230,6 @@ class Mlp(nn.Module):
         return x
 
 
-class Conv_Mixing(nn.Module):
-    def __init__(self, in_channels, mixing_size, act_layer=nn.GELU, drop=0.):
-        super().__init__()
-
-        self.in_channels = in_channels
-        self.mixing_size = mixing_size
-        self.chunk_size1 = [i.shape[0] for i in torch.chunk(torch.zeros(in_channels), mixing_size[0])]
-        self.chunk_size2 = [i.shape[0] for i in torch.chunk(torch.zeros(in_channels), mixing_size[1])]
-        self.chunk_size3 = [i.shape[0] for i in torch.chunk(torch.zeros(in_channels), mixing_size[2])]
-
-        self.fc1 = nn.ModuleList([nn.Conv2d(chunk_dim, chunk_dim, 1, padding=0, groups=chunk_dim) if i % 2 != 0 else
-                                  Mlp(chunk_dim, chunk_dim // 8, chunk_dim)
-                                  for i, chunk_dim in enumerate(self.chunk_size1)])
-        self.fc2 = nn.ModuleList([nn.Conv2d(chunk_dim, chunk_dim, 3, padding=1, groups=chunk_dim) if i % 2 != 0 else
-                                  Mlp(chunk_dim, chunk_dim // 8, chunk_dim)
-                                  for i, chunk_dim in enumerate(self.chunk_size2)])
-        self.fc3 = nn.ModuleList([nn.Conv2d(chunk_dim, chunk_dim, 5, padding=2, groups=chunk_dim) if i % 2 != 0 else
-                                  Mlp(chunk_dim, chunk_dim // 8, chunk_dim)
-                                  for i, chunk_dim in enumerate(self.chunk_size3)])
-
-        self.act = act_layer()
-        self.fusion = Mlp(in_channels, in_channels // 4, in_channels * 3)
-
-        self.proj = nn.Linear(in_channels, in_channels)
-        self.pro_drop = nn.Dropout(drop)
-
-    def forward(self, x):
-        B, C, H, W = x.size()
-
-        x1 = list(torch.chunk(x, self.mixing_size[0], 1))
-        for i, fc_1 in enumerate(self.fc1):
-            x1[i] = fc_1(x1[i]) if i % 2 != 0 else fc_1(x1[i].permute(0, 2, 3, 1).contiguous()).permute(0, 3, 1, 2).contiguous()
-        x1 = torch.cat(x1, 1)
-
-        x2 = list(torch.chunk(x, self.mixing_size[1], 1))
-        for i, fc_2 in enumerate(self.fc2):
-            x2[i] = fc_2(x2[i]) if i % 2 != 0 else fc_2(x2[i].permute(0, 2, 3, 1).contiguous()).permute(0, 3, 1, 2).contiguous()
-        x2 = torch.cat(x2, 1)
-
-        x3 = list(torch.chunk(x, self.mixing_size[2], 1))
-        for i, fc_3 in enumerate(self.fc3):
-            x3[i] = fc_3(x3[i]) if i % 2 != 0 else fc_3(x3[i].permute(0, 2, 3, 1).contiguous()).permute(0, 3, 1, 2).contiguous()
-        x3 = torch.cat(x3, 1)
-
-        a = (x1 + x2 + x3).flatten(2).mean(2)  # B C H W
-        a = self.fusion(a).reshape(B, C, 3).permute(2, 0, 1).softmax(dim=0).unsqueeze(3).unsqueeze(3)
-        x = (x1 * a[0] + x2 * a[1] + x3 * a[2]).permute(0, 2, 3, 1).contiguous()
-
-        x = self.proj(x)
-        x = self.pro_drop(x)
-
-        x = x.permute(0, 3, 1, 2).contiguous()
-
-        return x
-
 
 class Edge_Detect(nn.Module):
     def __init__(self, in_channels, mid_channels, out_channels):
@@ -431,10 +376,9 @@ class BASeg(nn.Module):
         # self.pr_head = nn.Sequential(
         #     nn.Conv2d(in_channels[-1], embed_dim, kernel_size=1, padding=0, bias=False),
         #     nn.BatchNorm2d(embed_dim))
-        # self.as_head = ASPP(in_channels=embed_dim, out_channels=embed_dim)
         # self.cc_head = CrissCrossAttention(in_channels=embed_dim)
         # self.nl_head = NonLocalBlock(in_channels=embed_dim)
-        # self.cm_head = Conv_Mixing(in_channels=embed_dim, mixing_size=[1, 2, 4])
+        self.as_head = ASPP(in_channels=in_channels[-1], out_channels=embed_dim)
 
         self.conv_sege = nn.Sequential(
             nn.Conv2d(in_channels[-1], 256, kernel_size=3, padding=1, bias=False),
@@ -443,7 +387,7 @@ class BASeg(nn.Module):
             nn.Conv2d(256, num_classes, kernel_size=1))
 
         self.edge_detect = Edge_Detect(in_channels=in_channels, mid_channels=128, out_channels=num_classes)
-        self.cont_aggreg = Context_Aggregation(in_channels=in_channels[-1], edge_channels=num_classes, middle_channels=embed_dim)
+        self.cont_aggreg = Context_Aggregation(in_channels=in_channels[-1]+embed_dim, edge_channels=num_classes, middle_channels=embed_dim)
         self.edge_sege = nn.Sequential(nn.Conv2d(num_classes, 1, kernel_size=3, padding=1, bias=False),
                                        nn.BatchNorm2d(1),
                                        nn.ReLU(inplace=True),
@@ -497,25 +441,23 @@ class BASeg(nn.Module):
         # ASPP
         # x = self.da_head(f4)
         # x = self.pr_head(f4)
-        # x = self.as_head(x)
         # x = self.cc_head(x)
         # x = self.nl_head(x)
         # x = self.cm_head(x)
-        # x = torch.cat([x, f4], dim=1)
+        x = self.as_head(f4)
+        x = torch.cat([x, f4], dim=1)
 
         # Context Aggregation
-        x = self.cont_aggreg(f4, edge_)
+        x = self.cont_aggreg(x, edge_)
 
         # Seg
         x = self.conv_sege(x)
         x = self.interpolate(x, f0_size[2:], mode='bilinear', align_corners=True)
 
-        return x
-
-        # # Loss
+        # Loss
         # if self.training:
-        #     aux = self.aux(f3)
-        #     aux = self.interpolate(aux, size=f0_size[2:], mode='bilinear', align_corners=True)
-        #     return x, edge, self.criterion((x, aux, edge), gts)
-        # else:
-        #     return x, edge
+            aux = self.aux(f3)
+            aux = self.interpolate(aux, size=f0_size[2:], mode='bilinear', align_corners=True)
+            return x, edge, self.criterion((x, aux, edge), gts)
+        else:
+            return x, edge
