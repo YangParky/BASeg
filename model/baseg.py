@@ -378,7 +378,7 @@ class BASeg(nn.Module):
         #     nn.BatchNorm2d(embed_dim))
         # self.cc_head = CrissCrossAttention(in_channels=embed_dim)
         # self.nl_head = NonLocalBlock(in_channels=embed_dim)
-        self.as_head = ASPP(in_channels=embed_dim, out_channels=embed_dim)
+        self.as_head = ASPP(in_channels=in_channels[-1], out_channels=embed_dim)
 
         self.conv_sege = nn.Sequential(
             nn.Conv2d(in_channels[-1], 256, kernel_size=3, padding=1, bias=False),
@@ -387,7 +387,7 @@ class BASeg(nn.Module):
             nn.Conv2d(256, num_classes, kernel_size=1))
 
         self.edge_detect = Edge_Detect(in_channels=in_channels, mid_channels=128, out_channels=num_classes)
-        self.cont_aggreg = Context_Aggregation(in_channels=in_channels[-1], edge_channels=num_classes, middle_channels=embed_dim)
+        self.cont_aggreg = Context_Aggregation(in_channels=in_channels[-1]+embed_dim, edge_channels=num_classes, middle_channels=embed_dim)
         self.edge_sege = nn.Sequential(nn.Conv2d(num_classes, 1, kernel_size=3, padding=1, bias=False),
                                        nn.BatchNorm2d(1),
                                        nn.ReLU(inplace=True),
@@ -444,11 +444,11 @@ class BASeg(nn.Module):
         # x = self.cc_head(x)
         # x = self.nl_head(x)
         # x = self.cm_head(x)
-        x = self.as_head(x)
+        x = self.as_head(f4)
         x = torch.cat([x, f4], dim=1)
 
         # Context Aggregation
-        x = self.cont_aggreg(f4, edge_)
+        x = self.cont_aggreg(x, edge_)
 
         # Seg
         x = self.conv_sege(x)
