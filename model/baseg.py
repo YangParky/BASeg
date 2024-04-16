@@ -381,7 +381,7 @@ class BASeg(nn.Module):
         self.as_head = ASPP(in_channels=in_channels[-1], out_channels=embed_dim)
 
         self.conv_sege = nn.Sequential(
-            nn.Conv2d(in_channels[-1], 256, kernel_size=3, padding=1, bias=False),
+            nn.Conv2d(in_channels[-1]+embed_dim, 256, kernel_size=3, padding=1, bias=False),
             nn.BatchNorm2d(256),
             nn.ReLU(inplace=True),
             nn.Conv2d(256, num_classes, kernel_size=1))
