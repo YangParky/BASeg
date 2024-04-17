@@ -230,7 +230,6 @@ class Mlp(nn.Module):
         return x
 
 
-
 class Edge_Detect(nn.Module):
     def __init__(self, in_channels, mid_channels, out_channels):
         super(Edge_Detect, self).__init__()
@@ -455,7 +454,7 @@ class BASeg(nn.Module):
         x = self.interpolate(x, f0_size[2:], mode='bilinear', align_corners=True)
 
         # Loss
-        # if self.training:
+        if self.training:
             aux = self.aux(f3)
             aux = self.interpolate(aux, size=f0_size[2:], mode='bilinear', align_corners=True)
             return x, edge, self.criterion((x, aux, edge), gts)
