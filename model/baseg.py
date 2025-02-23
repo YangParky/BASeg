@@ -1,7 +1,6 @@
 '''
 Author: XiaoYang Xiao
 '''
-
 import cv2
 import torch
 import numpy as np
@@ -510,12 +509,10 @@ class BASeg(nn.Module):
         x = self.conv_sege(x)
         x = self.interpolate(x, f0_size[2:], mode='bilinear', align_corners=True)
 
-        return x
-
-        # # Loss
-        # if self.training:
-        #     aux = self.aux(f3)
-        #     aux = self.interpolate(aux, size=f0_size[2:], mode='bilinear', align_corners=True)
-        #     return x, edge, self.criterion((x, aux, edge), gts)
-        # else:
-        #     return x, edge
+        # Loss
+        if self.training:
+            aux = self.aux(f3)
+            aux = self.interpolate(aux, size=f0_size[2:], mode='bilinear', align_corners=True)
+            return x, edge, self.criterion((x, aux, edge), gts)
+        else:
+            return x, edge
