@@ -230,7 +230,6 @@ class Mlp(nn.Module):
         return x
 
 
-
 class Edge_Detect(nn.Module):
     def __init__(self, in_channels, mid_channels, out_channels):
         super(Edge_Detect, self).__init__()
@@ -381,7 +380,7 @@ class BASeg(nn.Module):
         self.as_head = ASPP(in_channels=in_channels[-1], out_channels=embed_dim)
 
         self.conv_sege = nn.Sequential(
-            nn.Conv2d(in_channels[-1], 256, kernel_size=3, padding=1, bias=False),
+            nn.Conv2d(in_channels[-1]+embed_dim, 256, kernel_size=3, padding=1, bias=False),
             nn.BatchNorm2d(256),
             nn.ReLU(inplace=True),
             nn.Conv2d(256, num_classes, kernel_size=1))
@@ -455,7 +454,7 @@ class BASeg(nn.Module):
         x = self.interpolate(x, f0_size[2:], mode='bilinear', align_corners=True)
 
         # Loss
-        # if self.training:
+        if self.training:
             aux = self.aux(f3)
             aux = self.interpolate(aux, size=f0_size[2:], mode='bilinear', align_corners=True)
             return x, edge, self.criterion((x, aux, edge), gts)
