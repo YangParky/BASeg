@@ -59,7 +59,8 @@ In this paper, we present a Boundary Aware Network (BASeg) for semantic segmenta
      ```
 
 ### 2.5. Test:
-   - Download trained segmentation [models](https://drive.google.com/drive/folders/1u63PwLEDbvURM_THT99X6UNuQPSP0I3h?usp=sharing) and put them under folder specified in config or modify the specified paths.
+
+[//]: # (   - Download trained segmentation [models]&#40;https://drive.google.com/drive/folders/1u63PwLEDbvURM_THT99X6UNuQPSP0I3h?usp=sharing&#41; and put them under folder specified in config or modify the specified paths.)
    - For full testing (get listed performance):
      Validation on ADE20K
      ```
