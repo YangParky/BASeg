@@ -266,7 +266,7 @@ class BASeg(nn.Module):
         f0_size = inp.size()
 
         # ASPP
-        x = self.ASPP(x)
+        x = self.ASPP(f4)
         x = torch.cat([x, f4], dim=1)
 
         # Edge
