@@ -267,7 +267,7 @@ class BASeg(nn.Module):
 
         # ASPP
         x = self.ASPP(f4)
-        x = torch.cat([x, f4], dim=1)
+        # x = torch.cat([x, f4], dim=1)
 
         # Edge
         canny = self.get_canny_feature(inp, f0_size)
